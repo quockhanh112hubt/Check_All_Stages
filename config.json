@@ -1,0 +1,24 @@
+{
+    "program_settings": {
+        "program_directory": "C:\\Check_All_Stage",
+        "ftp_server": "10.62.102.5",
+        "ftp_user": "update",
+        "ftp_password": "update",
+        "ftp_directory": "KhanhDQ/Update_Program/Check_All_Stage/"
+    },
+    "database_settings": {
+        "connection_type": "oracledb",
+        "oracledb": {
+            "user": "mighty",
+            "password": "mighty",
+            "host": "10.162.200.20",
+            "port": 1521,
+            "service_name": "ITMVPACKMES"
+        },
+        "cx_oracle": {
+            "user": "mighty",
+            "password": "mighty",
+            "dsn": "(DESCRIPTION=(LOAD_BALANCE=yes)(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.35.20)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.35.20)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ITMVPACKMES)(FAILOVER_MODE=(TYPE=SELECT)(METHOD=BASIC))))"
+        }
+    }
+}
