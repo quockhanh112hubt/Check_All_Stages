@@ -125,25 +125,40 @@ class Data_P140_Checker_V2:
         # ===== HEADER SECTION =====
         self._create_header(main_container)
         
-        # ===== INPUT SECTION =====
-        self._create_input_section(main_container)
-        
-        # ===== CONTENT AREA (2 columns) =====
+        # ===== CONTENT AREA (left column: input + stages; right column: info) =====
         content_frame = tk.Frame(main_container, bg=COLORS['light'])
-        content_frame.pack(fill='both', expand=True, pady=(20, 0))
-        
-        # Left column - Stage visualization
+        content_frame.pack(fill='both', expand=True, pady=(10, 0))
+
+        # Left column will contain both input section and stages so their widths match
         left_column = tk.Frame(content_frame, bg=COLORS['light'])
+        # allow left column to fill available vertical space so inputs/stages are visible
         left_column.pack(side='left', fill='both', expand=True, padx=(0, 10))
-        
+
+        # Right column - Info panel (fixed width)
+        right_column = tk.Frame(content_frame, bg=COLORS['light'], width=320)
+        right_column.pack(side='right', fill='y')
+        right_column.pack_propagate(False)
+
+        # Create input at top of left_column so we can measure its width
+        self._create_input_section(left_column)
+
+        # Measure input width and fix left_column width to match it
+        self.root.update_idletasks()
+        try:
+            input_w = self.input_frame.winfo_width()
+        except Exception:
+            input_w = left_column.winfo_width() or 800
+        # enforce reasonable min
+        input_w = max(600, input_w)
+        left_column.config(width=input_w)
+        left_column.pack_propagate(False)
+
+        # Stages visualization below the input (will now match input width)
         self._create_stages_section(left_column)
-        
-        # Right column - Info panel
-        right_column = tk.Frame(content_frame, bg=COLORS['light'])
-        right_column.pack(side='right', fill='y', padx=(10, 0))
-        
+
+        # Product information on the right
         self._create_info_panel(right_column)
-        
+
         # ===== LOG SECTION =====
         self._create_log_section(main_container)
         
@@ -190,10 +205,12 @@ class Data_P140_Checker_V2:
         """Create modern input section"""
         input_frame = tk.Frame(parent, bg=COLORS['white'], relief='flat')
         input_frame.pack(fill='x', pady=(0, 20))
+        # store reference so caller can measure width
+        self.input_frame = input_frame
         
-        # Inner padding
+        # Inner padding (match stages padding so widths align)
         inner = tk.Frame(input_frame, bg=COLORS['white'])
-        inner.pack(fill='x', padx=40, pady=25)
+        inner.pack(fill='x', padx=25, pady=25)
         
         # Device ID input
         device_frame = tk.Frame(inner, bg=COLORS['white'])
