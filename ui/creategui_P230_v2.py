@@ -49,18 +49,19 @@ class ModernStageCard(tk.Frame):
         self.stage_name = stage_name
         self.status = 'pending'
         self.configure(highlightbackground=COLORS['border'], highlightthickness=1)
-        self.status_canvas = tk.Canvas(self, width=55, height=55, bg=COLORS['white'], 
+        # smaller status indicator
+        self.status_canvas = tk.Canvas(self, width=36, height=36, bg=COLORS['white'],
                                        highlightthickness=0, bd=0)
-        self.status_canvas.pack(pady=(12, 8))
-        self.status_circle = self.status_canvas.create_oval(12, 12, 43, 43, 
-                                                             fill=COLORS['light'], 
+        self.status_canvas.pack(pady=(8, 6))
+        self.status_circle = self.status_canvas.create_oval(6, 6, 30, 30,
+                                                             fill=COLORS['light'],
                                                              outline=COLORS['border'], width=2)
-        self.name_label = tk.Label(self, text=stage_name, font=('Segoe UI', 9, 'bold'),
+        self.name_label = tk.Label(self, text=stage_name, font=('Segoe UI', 8, 'bold'),
                                    bg=COLORS['white'], fg=COLORS['text_primary'])
-        self.name_label.pack(pady=(0, 6))
-        self.status_label = tk.Label(self, text='Pending', font=('Segoe UI', 8),
+        self.name_label.pack(pady=(0, 4))
+        self.status_label = tk.Label(self, text='Pending', font=('Segoe UI', 7),
                                      bg=COLORS['white'], fg=COLORS['text_secondary'])
-        self.status_label.pack(pady=(0, 12))
+        self.status_label.pack(pady=(0, 8))
         self.bind('<Enter>', self._on_enter)
         self.bind('<Leave>', self._on_leave)
         
@@ -105,15 +106,33 @@ class Data_P230_Checker_V2:
         main_container = tk.Frame(root, bg=COLORS['light'])
         main_container.pack(fill='both', expand=True, padx=20, pady=20)
         self._create_header(main_container)
-        self._create_input_section(main_container)
         content_frame = tk.Frame(main_container, bg=COLORS['light'])
         content_frame.pack(fill='both', expand=True, pady=(20, 0))
         left_column = tk.Frame(content_frame, bg=COLORS['light'])
+        # allow left column to fill available vertical space so inputs/stages are visible
         left_column.pack(side='left', fill='both', expand=True, padx=(0, 10))
+
+        # Create input at top of left_column so we can measure its width
+        self._create_input_section(left_column)
+
+        # Measure input width and fix left_column width to match it
+        self.root.update_idletasks()
+        try:
+            input_w = self.input_frame.winfo_width()
+        except Exception:
+            input_w = left_column.winfo_width() or 800
+        input_w = max(600, input_w)
+        left_column.config(width=input_w)
+        left_column.pack_propagate(False)
+
+        # Stages visualization below the input (will now match input width)
         self._create_stages_section(left_column)
-        right_column = tk.Frame(content_frame, bg=COLORS['light'])
+
+        right_column = tk.Frame(content_frame, bg=COLORS['light'], width=320)
         right_column.pack(side='right', fill='y', padx=(10, 0))
+        right_column.pack_propagate(False)
         self._create_info_panel(right_column)
+
         self._create_log_section(main_container)
         
     def _create_header(self, parent):
@@ -149,52 +168,63 @@ class Data_P230_Checker_V2:
     def _create_input_section(self, parent):
         input_frame = tk.Frame(parent, bg=COLORS['white'], relief='flat')
         input_frame.pack(fill='x', pady=(0, 20))
+        # store reference so caller can measure width
+        self.input_frame = input_frame
+
         inner = tk.Frame(input_frame, bg=COLORS['white'])
-        inner.pack(fill='x', padx=40, pady=25)
+        inner.pack(fill='x', padx=25, pady=8)
+
         device_frame = tk.Frame(inner, bg=COLORS['white'])
-        device_frame.pack(fill='x', pady=(0, 18))
-        device_label = tk.Label(device_frame, text="Device ID", 
-                               font=('Segoe UI', 11, 'bold'),
+        device_frame.pack(fill='x', pady=(0, 4))
+
+        device_label = tk.Label(device_frame, text="Device ID",
+                               font=('Segoe UI', 10, 'bold'),
                                bg=COLORS['white'], fg=COLORS['text_primary'],
                                width=12, anchor='e')
-        device_label.pack(side='left', padx=(0, 20))
-        self.Input_DeviceID = tk.Entry(device_frame, font=('Segoe UI', 11),
+        device_label.pack(side='left', padx=(0, 12))
+
+        self.Input_DeviceID = tk.Entry(device_frame, font=('Segoe UI', 10),
                                        relief='solid', bd=1,
                                        highlightbackground=COLORS['border'],
                                        highlightcolor=COLORS['secondary'],
                                        highlightthickness=2)
-        self.Input_DeviceID.pack(side='left', fill='x', expand=True, ipady=10)
+        self.Input_DeviceID.pack(side='left', fill='x', expand=True, ipady=4)
         self.Input_DeviceID.bind("<Return>", lambda e: self.search_mcu_id())
-        device_btn = tk.Button(device_frame, text="🔍 CHECK", 
+
+        device_btn = tk.Button(device_frame, text="🔍 CHECK",
                               command=self.search_mcu_id,
-                              font=('Segoe UI', 10, 'bold'),
+                              font=('Segoe UI', 9, 'bold'),
                               bg=COLORS['secondary'], fg=COLORS['white'],
                               relief='flat', cursor='hand2',
-                              padx=25, pady=10,
+                              padx=18, pady=4,
                               activebackground=COLORS['primary'])
-        device_btn.pack(side='left', padx=(20, 0))
+        device_btn.pack(side='left', padx=(12, 0))
+
         mcu_frame = tk.Frame(inner, bg=COLORS['white'])
-        mcu_frame.pack(fill='x')
-        mcu_label = tk.Label(mcu_frame, text="MCU ID", 
-                            font=('Segoe UI', 11, 'bold'),
+        mcu_frame.pack(fill='x', pady=(0, 4))
+
+        mcu_label = tk.Label(mcu_frame, text="MCU ID",
+                            font=('Segoe UI', 10, 'bold'),
                             bg=COLORS['white'], fg=COLORS['text_primary'],
                             width=12, anchor='e')
-        mcu_label.pack(side='left', padx=(0, 20))
-        self.Input_MCUID = tk.Entry(mcu_frame, font=('Segoe UI', 11),
+        mcu_label.pack(side='left', padx=(0, 12))
+
+        self.Input_MCUID = tk.Entry(mcu_frame, font=('Segoe UI', 10),
                                     relief='solid', bd=1,
                                     highlightbackground=COLORS['border'],
                                     highlightcolor=COLORS['secondary'],
                                     highlightthickness=2)
-        self.Input_MCUID.pack(side='left', fill='x', expand=True, ipady=10)
+        self.Input_MCUID.pack(side='left', fill='x', expand=True, ipady=4)
         self.Input_MCUID.bind("<Return>", lambda e: self.clear_main())
-        mcu_btn = tk.Button(mcu_frame, text="🔍 CHECK", 
+
+        mcu_btn = tk.Button(mcu_frame, text="🔍 CHECK",
                            command=self.clear_main,
-                           font=('Segoe UI', 10, 'bold'),
+                           font=('Segoe UI', 9, 'bold'),
                            bg=COLORS['secondary'], fg=COLORS['white'],
                            relief='flat', cursor='hand2',
-                           padx=25, pady=10,
+                           padx=18, pady=4,
                            activebackground=COLORS['primary'])
-        mcu_btn.pack(side='left', padx=(20, 0))
+        mcu_btn.pack(side='left', padx=(12, 0))
         
     def _create_stages_section(self, parent):
         stages_container = tk.Frame(parent, bg=COLORS['white'], relief='flat')
@@ -249,8 +279,9 @@ class Data_P230_Checker_V2:
             grid_frame.pack(fill='x', padx=15, pady=(0, 5))
             for idx, (display_name, key) in enumerate(stages):
                 card = ModernStageCard(grid_frame, display_name)
-                row = idx // 7
-                col = idx % 7
+                # place 8 cards per row instead of 7
+                row = idx // 8
+                col = idx % 8
                 card.grid(row=row, column=col, padx=6, pady=6, sticky='ew')
                 grid_frame.columnconfigure(col, weight=1, minsize=145)
                 self.stage_cards[key] = card
@@ -303,12 +334,12 @@ class Data_P230_Checker_V2:
         title = tk.Label(log_frame, text="📄 Activity Log",
                         font=('Segoe UI', 11, 'bold'),
                         bg=COLORS['white'], fg=COLORS['primary'])
-        title.pack(anchor='w', padx=25, pady=(18, 12))
+        title.pack(anchor='w', padx=25, pady=(12, 8))
         log_container = tk.Frame(log_frame, bg=COLORS['border'])
-        log_container.pack(fill='x', padx=25, pady=(0, 25))
+        log_container.pack(fill='x', padx=25, pady=(0, 12))
         self.Log = scrolledtext.ScrolledText(log_container, font=('Consolas', 9),
                                              bg='#f8fafc', fg=COLORS['text_primary'],
-                                             relief='flat', height=8, padx=10, pady=8)
+                                             relief='flat', height=4, padx=8, pady=6)
         self.Log.pack(fill='x', padx=1, pady=1)
         self.Log.configure(state='disabled')
         self.Log.tag_config("OK", foreground=COLORS['success'], font=('Consolas', 9, 'bold'))

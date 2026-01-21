@@ -403,3 +403,105 @@
 2026-01-21 16:10:57 - 
 ✓ All checks completed successfully
 
+2026-01-21 16:22:34 - ○ Firmware: Skipped
+
+2026-01-21 16:22:35 - ○ PBA Function: Skipped
+
+2026-01-21 16:22:36 - ○ Heater: Skipped
+
+2026-01-21 16:22:36 - ○ Leak Test: Skipped
+
+2026-01-21 16:22:37 - ○ 3QR Matching: Skipped
+
+2026-01-21 16:22:38 - ○ Sleep: Skipped
+
+2026-01-21 16:22:39 - ○ LCD LED: Skipped
+
+2026-01-21 16:22:40 - ○ Charge Test: Skipped
+
+2026-01-21 16:22:41 - ○ Calibration: Skipped
+
+2026-01-21 16:22:42 - ○ Verification: Skipped
+
+2026-01-21 16:22:43 - ○ Puffing: Skipped
+
+2026-01-21 16:22:44 - ○ Sensor: Skipped
+
+2026-01-21 16:22:44 - ○ Inductive: Skipped
+
+2026-01-21 16:22:45 - ○ Cartridge: Skipped
+
+2026-01-21 16:22:46 - ○ SN Writing: Skipped
+
+2026-01-21 16:22:47 - ○ Final Test: Skipped
+
+2026-01-21 16:22:48 - ✓ Device ID: OK at 16:09:50 20-01-2026
+
+2026-01-21 16:22:49 - ✓ Giftbox: OK at 00:18:10 21-01-2026
+
+2026-01-21 16:22:50 - ○ Film: Skipped
+
+2026-01-21 16:22:50 - ✓ Sleeve: OK at 00:23:35 21-01-2026
+
+2026-01-21 16:22:51 - ✓ Weighing: OK at 12:25:43 21-01-2026
+
+2026-01-21 16:22:52 - ✓ Cartonbox: OK at 00:29:11 21-01-2026
+
+2026-01-21 16:22:53 - ✓ Pallet: OK at 01:07:07 21-01-2026
+
+2026-01-21 16:22:54 - ○ Shipping: Skipped
+
+2026-01-21 16:22:54 - 
+✓ All checks completed successfully
+
+2026-01-21 16:29:13 - ○ Firmware: Skipped
+
+2026-01-21 16:29:14 - ○ PBA Function: Skipped
+
+2026-01-21 16:29:15 - ○ Heater: Skipped
+
+2026-01-21 16:29:15 - ○ Leak Test: Skipped
+
+2026-01-21 16:29:16 - ○ 3QR Matching: Skipped
+
+2026-01-21 16:29:17 - ○ Sleep: Skipped
+
+2026-01-21 16:29:18 - ○ LCD LED: Skipped
+
+2026-01-21 16:29:19 - ○ Charge Test: Skipped
+
+2026-01-21 16:29:20 - ○ Calibration: Skipped
+
+2026-01-21 16:29:20 - ○ Verification: Skipped
+
+2026-01-21 16:29:21 - ○ Puffing: Skipped
+
+2026-01-21 16:29:22 - ○ Sensor: Skipped
+
+2026-01-21 16:29:23 - ○ Inductive: Skipped
+
+2026-01-21 16:29:24 - ○ Cartridge: Skipped
+
+2026-01-21 16:29:25 - ○ SN Writing: Skipped
+
+2026-01-21 16:29:25 - ○ Final Test: Skipped
+
+2026-01-21 16:29:26 - ✓ Device ID: OK at 16:09:50 20-01-2026
+
+2026-01-21 16:29:27 - ✓ Giftbox: OK at 00:18:10 21-01-2026
+
+2026-01-21 16:29:28 - ○ Film: Skipped
+
+2026-01-21 16:29:29 - ✓ Sleeve: OK at 00:23:35 21-01-2026
+
+2026-01-21 16:29:30 - ✓ Weighing: OK at 12:25:43 21-01-2026
+
+2026-01-21 16:29:30 - ✓ Cartonbox: OK at 00:29:11 21-01-2026
+
+2026-01-21 16:29:31 - ✓ Pallet: OK at 01:07:07 21-01-2026
+
+2026-01-21 16:29:32 - ○ Shipping: Skipped
+
+2026-01-21 16:29:32 - 
+✓ All checks completed successfully
+
