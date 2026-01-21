@@ -10,7 +10,7 @@ from utils.thread_utils import StageChecker
 from data.pba import get_data_pba_function_P140
 from data.firmware import get_data_firmware_P140
 from data.heater_module import get_data_heater_module_aging_P140, get_data_heater_module_function_P140, get_data_cover_heater_function_P140, get_heater_id_P140, get_heater_module_id_P140
-from data.matching import get_data_matching_P140, get_main_pba_P140
+from data.matching import get_data_matching_P140, get_main_pba_P140, get_cell_id_P140
 from data.lcdled import get_data_lcdled_P140
 from data.charge import get_data_charge_P140
 from data.calibration import get_data_cali_P140
@@ -414,9 +414,11 @@ class Data_P140_Checker_V2:
             ("🔥 Cover Heater ID", "heater_id"),
             ("🔧 Heater Module ID", "heater_module_id"),
             ("⚡ Main PBA", "main_pba"),
+            ("🔋 Battery ID", "cell_id"),
             ("📱 Device ID", "device_id"),
             ("🎁 Giftbox", "giftbox"),
-            ("📦 Cartonbox", "cartonbox")
+            ("📦 Cartonbox", "cartonbox"),
+            ("🧺 Pallet", "pallet")
         ]
         
         for label_text, key in info_items:
@@ -576,9 +578,11 @@ class Data_P140_Checker_V2:
                 'heater_id': get_heater_id_P140(mcu_id),
                 'heater_module_id': get_heater_module_id_P140(mcu_id),
                 'main_pba': get_main_pba_P140(mcu_id),
+                'cell_id': get_cell_id_P140(mcu_id),
                 'device_id': get_info_deviceid(mcu_id),
                 'giftbox': get_info_giftbox(mcu_id),
-                'cartonbox': get_info_cartonbox(mcu_id)
+                'cartonbox': get_info_cartonbox(mcu_id),
+                'pallet': get_info_pallet(mcu_id)
             }
         
         def update_info_panel(info):
@@ -587,9 +591,11 @@ class Data_P140_Checker_V2:
                 self.info_labels['heater_id'].config(text=info['heater_id'])
                 self.info_labels['heater_module_id'].config(text=info['heater_module_id'])
                 self.info_labels['main_pba'].config(text=info['main_pba'])
+                self.info_labels['cell_id'].config(text=info['cell_id'])
                 self.info_labels['device_id'].config(text=info['device_id'])
                 self.info_labels['giftbox'].config(text=info['giftbox'])
                 self.info_labels['cartonbox'].config(text=info['cartonbox'])
+                self.info_labels['pallet'].config(text=info['pallet'])
         
         # Load info in background
         from utils.thread_utils import BackgroundTask

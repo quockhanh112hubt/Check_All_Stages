@@ -280,3 +280,29 @@ def get_info_cartonbox(mcu_id):
             cursor.close()
         if connection:
             connection.close()
+
+def get_info_pallet(mcu_id):
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        query = """
+            SELECT NVL(MAX(A.PALLET_ID), 'SKIP') AS RESULT
+            FROM
+            (
+                SELECT MCU_ID, PALLET_ID, PALLET_ATTACH_DATE, 
+                    RANK() OVER (PARTITION BY MCU_ID ORDER BY PALLET_ATTACH_DATE DESC) AS RNK
+                FROM MIGHTY.ASFC_SUBLOT_INFO
+                WHERE MCU_ID = :mcu_id
+            ) A 
+            WHERE A.RNK = 1
+        """
+        cursor.execute(query, {'mcu_id': mcu_id})
+        result = cursor.fetchone()
+        return result[0] if result else 'NO DATA'
+    except Exception as e:
+        messagebox.showerror("Database Error", str(e))
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()

@@ -211,3 +211,29 @@ def get_main_pba_P140(mcu_id):
             cursor.close()
         if connection:
             connection.close()
+            
+def get_cell_id_P140(mcu_id):
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        query = """
+            SELECT NVL(MAX(R.CELL_ID), 'SKIP') AS RESULT 
+            FROM (
+                SELECT MATCHING.CELL_ID, MATCHING.TRANS_TIME, RANK() OVER (ORDER BY MATCHING.TRANS_TIME DESC) AS RNK
+                FROM MIGHTY.ADC_P140_ID_MATCHING_HISTORY MATCHING
+                INNER JOIN MIGHTY.ADC_P140_PBA_FUNCTION_HISTORY PBA ON PBA.PBA_ID = MATCHING.PBA_ID
+                WHERE PBA.MCU_ID = :mcu_id
+            ) R
+            WHERE R.RNK = 1
+        """
+        cursor.execute(query, {'mcu_id': mcu_id})
+        result = cursor.fetchone()
+        return result[0] if result else 'SKIP'
+    except Exception as e:
+        messagebox.showerror("Database Error", str(e))
+        return 'SKIP'
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
