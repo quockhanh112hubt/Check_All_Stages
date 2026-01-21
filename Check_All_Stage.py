@@ -7,13 +7,9 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter import messagebox
-from ui.creategui_P230 import create_gui_P230
 from ui.creategui_P230_v2 import create_gui_P230_v2
-from ui.creategui_P4 import create_gui_P4
 from ui.creategui_P4_v2 import create_gui_P4_v2
-from ui.creategui_P1 import create_gui_P1
 from ui.creategui_P1_v2 import create_gui_P1_v2
-from ui.creategui_P140 import create_gui_P140
 from ui.creategui_P140_v2 import create_gui_P140_v2
 from utils.utils import get_current_version
 from utils.db_config import get_db_connection
