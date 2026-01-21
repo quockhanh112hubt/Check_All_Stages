@@ -49,23 +49,24 @@ class ModernStageCard(tk.Frame):
         # Card styling with shadow effect
         self.configure(highlightbackground=COLORS['border'], highlightthickness=1)
         
-        # Status indicator (circle)
-        self.status_canvas = tk.Canvas(self, width=55, height=55, bg=COLORS['white'], 
+        # Status indicator (circle) - reduced size
+        self.status_canvas = tk.Canvas(self, width=36, height=36, bg=COLORS['white'],
                                        highlightthickness=0, bd=0)
-        self.status_canvas.pack(pady=(12, 8))
-        self.status_circle = self.status_canvas.create_oval(12, 12, 43, 43, 
-                                                             fill=COLORS['light'], 
+        self.status_canvas.pack(pady=(8, 6))
+        # smaller oval inside canvas
+        self.status_circle = self.status_canvas.create_oval(6, 6, 30, 30,
+                                                             fill=COLORS['light'],
                                                              outline=COLORS['border'], width=2)
-        
+
         # Stage name label
-        self.name_label = tk.Label(self, text=stage_name, font=('Segoe UI', 9, 'bold'),
+        self.name_label = tk.Label(self, text=stage_name, font=('Segoe UI', 8, 'bold'),
                                    bg=COLORS['white'], fg=COLORS['text_primary'])
-        self.name_label.pack(pady=(0, 6))
-        
-        # Status text
-        self.status_label = tk.Label(self, text='Pending', font=('Segoe UI', 8),
+        self.name_label.pack(pady=(0, 4))
+
+        # Status text (smaller)
+        self.status_label = tk.Label(self, text='Pending', font=('Segoe UI', 7),
                                      bg=COLORS['white'], fg=COLORS['text_secondary'])
-        self.status_label.pack(pady=(0, 12))
+        self.status_label.pack(pady=(0, 8))
         
         # Hover effect
         self.bind('<Enter>', self._on_enter)
@@ -207,67 +208,69 @@ class Data_P140_Checker_V2:
         input_frame.pack(fill='x', pady=(0, 20))
         # store reference so caller can measure width
         self.input_frame = input_frame
-        
+
         # Inner padding (match stages padding so widths align)
         inner = tk.Frame(input_frame, bg=COLORS['white'])
-        inner.pack(fill='x', padx=25, pady=25)
-        
+        # further reduce vertical padding to shrink input area height
+        inner.pack(fill='x', padx=25, pady=8)
+
         # Device ID input
         device_frame = tk.Frame(inner, bg=COLORS['white'])
-        device_frame.pack(fill='x', pady=(0, 18))
-        
-        device_label = tk.Label(device_frame, text="Device ID", 
-                               font=('Segoe UI', 11, 'bold'),
+        device_frame.pack(fill='x', pady=(0, 4))
+
+        device_label = tk.Label(device_frame, text="Device ID",
+                               font=('Segoe UI', 10, 'bold'),
                                bg=COLORS['white'], fg=COLORS['text_primary'],
                                width=12, anchor='e')
-        device_label.pack(side='left', padx=(0, 20))
-        
-        self.Input_DeviceID = tk.Entry(device_frame, font=('Segoe UI', 11),
+        device_label.pack(side='left', padx=(0, 12))
+
+        self.Input_DeviceID = tk.Entry(device_frame, font=('Segoe UI', 10),
                                        relief='solid', bd=1,
                                        highlightbackground=COLORS['border'],
                                        highlightcolor=COLORS['secondary'],
                                        highlightthickness=2)
-        self.Input_DeviceID.pack(side='left', fill='x', expand=True, ipady=10)
+        # reduce internal vertical padding (ipady) to make the entry shorter
+        self.Input_DeviceID.pack(side='left', fill='x', expand=True, ipady=4)
         self.Input_DeviceID.bind("<Return>", lambda e: self.search_mcu_id())
-        
-        device_btn = tk.Button(device_frame, text="🔍 CHECK", 
-                              command=self.search_mcu_id,
-                              font=('Segoe UI', 10, 'bold'),
-                              bg=COLORS['secondary'], fg=COLORS['white'],
-                              relief='flat', cursor='hand2',
-                              padx=25, pady=10,
-                              activebackground=COLORS['primary'],
-                              activeforeground=COLORS['white'])
-        device_btn.pack(side='left', padx=(20, 0))
-        
+
+        device_btn = tk.Button(device_frame, text="🔍 CHECK",
+                               command=self.search_mcu_id,
+                               font=('Segoe UI', 9, 'bold'),
+                               bg=COLORS['secondary'], fg=COLORS['white'],
+                               relief='flat', cursor='hand2',
+                               padx=18, pady=4,
+                               activebackground=COLORS['primary'],
+                               activeforeground=COLORS['white'])
+        device_btn.pack(side='left', padx=(12, 0))
+
         # MCU ID input
         mcu_frame = tk.Frame(inner, bg=COLORS['white'])
-        mcu_frame.pack(fill='x')
-        
-        mcu_label = tk.Label(mcu_frame, text="MCU ID", 
-                            font=('Segoe UI', 11, 'bold'),
-                            bg=COLORS['white'], fg=COLORS['text_primary'],
-                            width=12, anchor='e')
-        mcu_label.pack(side='left', padx=(0, 20))
-        
-        self.Input_MCUID = tk.Entry(mcu_frame, font=('Segoe UI', 11),
+        mcu_frame.pack(fill='x', pady=(0, 4))
+
+        mcu_label = tk.Label(mcu_frame, text="MCU ID",
+                             font=('Segoe UI', 10, 'bold'),
+                             bg=COLORS['white'], fg=COLORS['text_primary'],
+                             width=12, anchor='e')
+        mcu_label.pack(side='left', padx=(0, 12))
+
+        self.Input_MCUID = tk.Entry(mcu_frame, font=('Segoe UI', 10),
                                     relief='solid', bd=1,
                                     highlightbackground=COLORS['border'],
                                     highlightcolor=COLORS['secondary'],
                                     highlightthickness=2)
-        self.Input_MCUID.pack(side='left', fill='x', expand=True, ipady=10)
+        self.Input_MCUID.pack(side='left', fill='x', expand=True, ipady=4)
         self.Input_MCUID.bind("<Return>", lambda e: self.clear_main())
-        
-        mcu_btn = tk.Button(mcu_frame, text="🔍 CHECK", 
-                           command=self.clear_main,
-                           font=('Segoe UI', 10, 'bold'),
-                           bg=COLORS['secondary'], fg=COLORS['white'],
-                           relief='flat', cursor='hand2',
-                           padx=25, pady=10,
-                           activebackground=COLORS['primary'],
-                           activeforeground=COLORS['white'])
-        mcu_btn.pack(side='left', padx=(20, 0))
-        
+
+        mcu_btn = tk.Button(mcu_frame, text="🔍 CHECK",
+                            command=self.clear_main,
+                            font=('Segoe UI', 9, 'bold'),
+                            bg=COLORS['secondary'], fg=COLORS['white'],
+                            relief='flat', cursor='hand2',
+                            padx=18, pady=4,
+                            activebackground=COLORS['primary'],
+                            activeforeground=COLORS['white'])
+        mcu_btn.pack(side='left', padx=(12, 0))
+
     def _create_stages_section(self, parent):
         """Create stages visualization with cards"""
         stages_container = tk.Frame(parent, bg=COLORS['white'], relief='flat')
@@ -437,21 +440,24 @@ class Data_P140_Checker_V2:
     def _create_log_section(self, parent):
         """Create log section"""
         log_frame = tk.Frame(parent, bg=COLORS['white'], relief='flat')
-        log_frame.pack(fill='x', pady=(20, 0))
-        
+        # reduce vertical space allocated to log
+        log_frame.pack(fill='x', pady=(10, 0))
+
         # Title
         title = tk.Label(log_frame, text="📄 Activity Log",
                         font=('Segoe UI', 11, 'bold'),
                         bg=COLORS['white'], fg=COLORS['primary'])
-        title.pack(anchor='w', padx=25, pady=(18, 12))
-        
+        title.pack(anchor='w', padx=25, pady=(10, 8))
+
         # Log text with border
         log_container = tk.Frame(log_frame, bg=COLORS['border'])
-        log_container.pack(fill='x', padx=25, pady=(0, 25))
-        
+        # reduce bottom padding so log box is shorter overall
+        log_container.pack(fill='x', padx=25, pady=(0, 12))
+
+        # reduce displayed height ~50% (was 8)
         self.Log = scrolledtext.ScrolledText(log_container, font=('Consolas', 9),
                                              bg='#f8fafc', fg=COLORS['text_primary'],
-                                             relief='flat', height=8, padx=10, pady=8)
+                                             relief='flat', height=4, padx=10, pady=8)
         self.Log.pack(fill='x', padx=1, pady=1)
         self.Log.configure(state='disabled')
         self.Log.tag_config("OK", foreground=COLORS['success'], font=('Consolas', 9, 'bold'))
